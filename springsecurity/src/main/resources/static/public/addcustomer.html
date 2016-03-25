@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>List of Customers</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module('app', []);
+
+	app.controller('customer', [ '$scope', '$http', function($scope, $http) {
+		$scope.title = 'Add new Customer!';
+
+		$scope.customer = {};
+		
+		$scope.saveCustomer = function(){
+			//Validation
+			
+			$http({
+				method: 'POST',
+				url : '../admin/savecustomer',
+				data : $scope.customer
+			}).then(function(response){
+				if(response.data.status){
+					alert('Customer Added Successfully!');
+					$scope.customer = {};
+				} else {
+					alert('Customer Addition Failed!');
+				}
+			});
+		};
+
+	} ]);
+</script>
+</head>
+<body ng-app="app">
+	<div ng-controller="customer">
+		<h1>{{title}}</h1>
+		<form ng-submit="saveCustomer()">
+			First Name: <input type="text" id="ipFirstName"
+				ng-model="customer.firstName" /><br /> 
+				
+			Last Name: <input
+				type="text" id="ipLastName" ng-model="customer.lastName" /><br />
+			<button type="submit">Save Customer</button>
+		</form>
+	</div>
+
+</body>
+</html>
